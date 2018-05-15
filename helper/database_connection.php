@@ -1,26 +1,23 @@
 <?php
 
-include 'constant.php';
-
 class DatabaseConnection {
 
-    private $host = 'localhost';
-    private $port = '3306';
-    private $user = 'root';
-    private $password = 'root';
-    private $db = 'bussypay';
+    private static $dsn = 'mysql:dbname=bussypay;host=localhost';
+    private static $user = 'root';
+    private static $pass = 'root';
+    private static $con = null;
 
-    function connect() {
-        $con = @new mysqli($this->host, $this->user, $this->password, $this->db);
-
-        if ($con->connect_error) {
-            $response = array('code' => HTTPStatusCode::serverError, 'message' => $con->connect_error);
-        } else {
-            $response = array('code' => HTTPStatusCode::success, 'message' => HTTPStatusMessage::success);
+    public static function getInstance() {
+        if (DatabaseConnection::$con === null) {
+            DatabaseConnection::$con = new PDO(
+                DatabaseConnection::$dsn,
+                DatabaseConnection::$user,
+                DatabaseConnection::$pass
+            );
+            return DatabaseConnection::$con;
         }
-        
-        echo json_encode($response);
+
+        return DatabaseConnection::$con;
     }
 
-    // Do not forgot to implement close connection fucntion.
 }
