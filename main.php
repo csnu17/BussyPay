@@ -1,5 +1,8 @@
 <?php
 
+include 'service/user_information_service.php';
 include 'helper/database_connection.php';
 
-$db = DatabaseConnection::getInstance();
+$userInformationService = new UserServiceInformation();
+$result = $userInformationService->getAllUsers();
+echo json_encode($result);
