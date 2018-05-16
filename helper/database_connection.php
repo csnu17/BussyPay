@@ -7,7 +7,7 @@ class DatabaseConnection {
     private static $pass = 'root';
     private static $con = null;
 
-    public static function getInstance() {
+    public static function getInstance(): PDO {
         if (DatabaseConnection::$con === null) {
             $otp = array(
                 PDO::ATTR_EMULATE_PREPARES => false,
