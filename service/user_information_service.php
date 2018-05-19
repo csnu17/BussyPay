@@ -1,24 +1,21 @@
 <?php
 
+require __DIR__ . '/../helper/json_response_parser.php';
 require __DIR__ . '/../helper/database_connection.php';
 
 class UserServiceInformation {
 
-    function getAllUsers(): array {
+    function getAllUsers(): string {
         $con = DatabaseConnection::getInstance();
 
         $stmt = $con->prepare("SELECT username, first_name, last_name, email, phone, wallet_id FROM users");
         $stmt->execute();
         $result = $stmt->fetchAll();
 
-        if (!$result) {
-            $result = array('code' => 400, 'message' => 'No users found.');
-        }
-
-        return $result;
+        return JSONResponseParser::parse($result, 'Success', 'No users found.');
     }
 
-    function getUserByUsername(string $username): array {
+    function getUserByUsername(string $username): string {
         $con = DatabaseConnection::getInstance();
 
         $stmt = $con->prepare("SELECT username, first_name, last_name, email, phone, wallet_id FROM users WHERE username = :username");
@@ -27,11 +24,7 @@ class UserServiceInformation {
         ]);
         $result = $stmt->fetch();
 
-        if (!$result) {
-            $result = array('code' => 400, 'message' => 'No user found.');
-        }
-
-        return $result;
+        return JSONResponseParser::parse($result, 'Success', 'No user found.');
     }
 
 }

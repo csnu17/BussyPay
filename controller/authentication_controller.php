@@ -1,6 +1,6 @@
 <?php
 
-require  __DIR__ . '/service/authentication_service.php';
+require  __DIR__ . '/../service/authentication_service.php';
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
@@ -9,4 +9,4 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $result = $serviceAuthen->login($username, $password);
 }
 
-echo json_encode($result);
+echo $result;

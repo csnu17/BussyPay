@@ -5,7 +5,7 @@ require __DIR__ . '/../helper/database_connection.php';
 
 class WalletService {
 
-    function getAllWallets(): array {
+    function getAllWallets(): string {
         $con = DatabaseConnection::getInstance();
 
         $stmt = $con->prepare("SELECT wallet_id, balance, wallet_own FROM wallets");
@@ -15,7 +15,7 @@ class WalletService {
         return JSONResponseParser::parse($result, 'Success', 'No wallets found.');
     }
 
-    function getWalletByWalletId(string $walletId): array {
+    function getWalletByWalletId(string $walletId): string {
         $con = DatabaseConnection::getInstance();
 
         $stmt = $con->prepare("SELECT wallet_id, balance, wallet_own FROM wallets WHERE wallet_id = :wallet_id");
@@ -27,7 +27,7 @@ class WalletService {
         return JSONResponseParser::parse($result, 'Success', 'No wallet found.');
     }
 
-    function getWalletByWalletOwn(string $walletOwn): array {
+    function getWalletByWalletOwn(string $walletOwn): string {
         $con = DatabaseConnection::getInstance();
 
         $stmt = $con->prepare("SELECT wallet_id, balance, wallet_own FROM wallets WHERE wallet_own = :wallet_own");
@@ -39,7 +39,7 @@ class WalletService {
         return JSONResponseParser::parse($result, 'Success', 'No wallet found.');
     }
 
-    function updateBalance(string $wallet_id, float $currentBalance, float $value): array {
+    function updateBalance(string $wallet_id, float $currentBalance, float $value): string {
         $con = DatabaseConnection::getInstance();
 
         $adjustedBalance = $currentBalance + $value; // value can be minus. So current balance will be subtracted.

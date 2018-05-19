@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/service/wallet_service.php';
+require __DIR__ . '/../service/wallet_service.php';
 
 $walletService = new WalletService();
 
@@ -24,4 +24,4 @@ else if (isset($_POST['wallet_id']) && isset($_POST['balance']) && isset($_POST[
     $result = $walletService->updateBalance($wallet_id, $balance, $value);
 }
 
-echo json_encode($result);
+echo $result;

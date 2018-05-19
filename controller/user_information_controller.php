@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/service/user_information_service.php';
+require __DIR__ . '/../service/user_information_service.php';
 
 $userInformationService = new UserServiceInformation();
 
@@ -11,4 +11,4 @@ if (isset($_GET['username'])) {
     $result = $userInformationService->getUserByUsername($username);
 }
 
-echo json_encode($result);
+echo $result;
