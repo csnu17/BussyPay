@@ -1,11 +1,10 @@
 <?php
 
-include 'service/wallet_service.php';
-include 'helper/database_connection.php';
+require __DIR__ . '/service/wallet_service.php';
 
 $walletService = new WalletService();
 
-$result = $walletService->getAllWallets();{}
+$result = $walletService->getAllWallets();
 
 if (isset($_GET['wallet_id'])) {
     $walletId = $_GET['wallet_id'];

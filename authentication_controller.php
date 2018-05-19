@@ -1,7 +1,6 @@
 <?php
 
-include 'helper/database_connection.php';
-include 'service/authentication_service.php';
+require  __DIR__ . '/service/authentication_service.php';
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];

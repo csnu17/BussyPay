@@ -1,6 +1,6 @@
 <?php
 
-include '../helper/database_connection.php';
+require __DIR__ . '/../helper/database_connection.php';
 
 class UserServiceInformation {
 

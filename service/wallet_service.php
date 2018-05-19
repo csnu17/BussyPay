@@ -1,6 +1,7 @@
 <?php
 
-include '../helper/database_connection.php';
+require __DIR__ . '/../helper/json_response_parser.php';
+require __DIR__ . '/../helper/database_connection.php';
 
 class WalletService {
 
@@ -11,11 +12,7 @@ class WalletService {
         $stmt->execute();
         $result = $stmt->fetchAll();
 
-        if (!$result) {
-            return array('code' => '400', 'message' => 'No wallets found.');
-        }
-
-        return $result;
+        return JSONResponseParser::parse($result, 'Success', 'No wallets found.');
     }
 
     function getWalletByWalletId(string $walletId): array {
@@ -27,11 +24,7 @@ class WalletService {
         ]);
         $result = $stmt->fetch();
 
-        if (!$result) {
-            return array('code' => '400', 'message' => 'No wallet found.');
-        }
-
-        return $result;
+        return JSONResponseParser::parse($result, 'Success', 'No wallet found.');
     }
 
     function getWalletByWalletOwn(string $walletOwn): array {
@@ -43,11 +36,7 @@ class WalletService {
         ]);
         $result = $stmt->fetch();
 
-        if (!$result) {
-            return array('code' => '400', 'message' => 'No wallet found.');
-        }
-
-        return $result;
+        return JSONResponseParser::parse($result, 'Success', 'No wallet found.');
     }
 
     function updateBalance(string $wallet_id, float $currentBalance, float $value): array {
@@ -61,11 +50,8 @@ class WalletService {
             ':wallet_id' => $wallet_id
         ]);
 
-        if ($result) {
-            return array('code' => 200, 'message' => 'Update balance successfully.'); 
-        } else {
-            return array('code' => 400, 'message' => 'Update balance unsuccessfully. Please try again later.');
-        }
+        return JSONResponseParser::parse($result, 'Update balance successfully.', 
+                                            'Update balance unsuccessfully. Please try again later.');
     }
 
 }

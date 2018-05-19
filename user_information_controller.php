@@ -1,7 +1,6 @@
 <?php
 
-include 'service/user_information_service.php';
-include 'helper/database_connection.php';
+require __DIR__ . '/service/user_information_service.php';
 
 $userInformationService = new UserServiceInformation();
 

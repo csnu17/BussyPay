@@ -1,7 +1,6 @@
 <?php
 
-include '../helper/database_connection.php';
-include '../helper/constant.php';
+require __DIR__ . '/../helper/database_connection.php';
 
 class AuthenticationService {
 
