@@ -17,7 +17,6 @@ class AuthenticationService {
         $result = $stmt->fetch();
 
         if (!$result) {
-            // $result = array('code' => HTTPStatusCode::unauthorized, 'message' => HTTPStatusMessage::unauthorized);
             $result = array('code' => 401, 'message' => 'Username or Password is incorrect.');
         }
 
