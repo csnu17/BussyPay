@@ -11,6 +11,10 @@ class WalletService {
         $stmt->execute();
         $result = $stmt->fetchAll();
 
+        if (!$result) {
+            return array('code' => '400', 'message' => 'No wallets found.');
+        }
+
         return $result;
     }
 
@@ -23,6 +27,10 @@ class WalletService {
         ]);
         $result = $stmt->fetch();
 
+        if (!$result) {
+            return array('code' => '400', 'message' => 'No wallet found.');
+        }
+
         return $result;
     }
 
@@ -34,6 +42,10 @@ class WalletService {
             ':wallet_own' => $walletOwn
         ]);
         $result = $stmt->fetch();
+
+        if (!$result) {
+            return array('code' => '400', 'message' => 'No wallet found.');
+        }
 
         return $result;
     }

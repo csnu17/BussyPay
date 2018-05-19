@@ -5,7 +5,7 @@ include 'helper/database_connection.php';
 
 $walletService = new WalletService();
 
-// $result = $walletService->getAllWallets();
+$result = $walletService->getAllWallets();{}
 
 if (isset($_GET['wallet_id'])) {
     $walletId = $_GET['wallet_id'];

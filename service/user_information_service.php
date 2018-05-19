@@ -11,6 +11,10 @@ class UserServiceInformation {
         $stmt->execute();
         $result = $stmt->fetchAll();
 
+        if (!$result) {
+            $result = array('code' => 400, 'message' => 'No users found.');
+        }
+
         return $result;
     }
 
@@ -22,6 +26,10 @@ class UserServiceInformation {
             ':username' => $username
         ]);
         $result = $stmt->fetch();
+
+        if (!$result) {
+            $result = array('code' => 400, 'message' => 'No user found.');
+        }
 
         return $result;
     }

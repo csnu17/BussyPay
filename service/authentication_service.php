@@ -17,7 +17,7 @@ class AuthenticationService {
         $result = $stmt->fetch();
 
         if (!$result) {
-            $result = array('code' => 401, 'message' => 'Username or Password is incorrect.');
+            $result = array('code' => 400, 'message' => 'Username or Password is incorrect.');
         }
 
         return $result;
