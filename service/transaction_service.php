@@ -10,9 +10,10 @@ class TransactionService {
         $type = trim($type);
 
         $sql = "SELECT transactions.transaction_number, transactions.amount, transactions.transaction_date, 
-                        users.first_name, users.last_name, transaction_status.status FROM transactions 
+                        users.first_name, users.last_name, buses.bus_name,buses.source, buses.terminal, transaction_status.status FROM transactions 
                         INNER JOIN users ON transactions.user_id = users.id 
-                        INNER JOIN transaction_status ON transactions.status = transaction_status.id";
+                        INNER JOIN transaction_status ON transactions.status = transaction_status.id 
+                        INNER JOIN buses ON transactions.bus_id = buses.id";
 
         if ($type) {
             $sql .= " WHERE transactions.transaction_type = :transaction_type";
@@ -53,16 +54,21 @@ class TransactionService {
         return JSONResponseParser::parse($result, 'Success', 'No transaction found.');
     }
 
-    function createTransaction(float $amount, int $transactionType, int $userId): string {
+    function createTransaction(float $amount, int $transactionType, int $userId, int $busId): string {
         $con = DatabaseConnection::getInstance();
 
-        $stmt = $con->prepare("INSERT INTO transactions (transaction_number, amount, transaction_type, user_id, status) 
-                                    VALUES (:transaction_number, :amount, :transaction_type, :user_id, :status)");
+        if ($transactionType == 1) {
+            $busId = 99; // if transaction type is top_up, we will assign bus_id as 99.
+        }
+
+        $stmt = $con->prepare("INSERT INTO transactions (transaction_number, amount, transaction_type, user_id, bus_id, status) 
+                                    VALUES (:transaction_number, :amount, :transaction_type, :user_id, :bus_id, :status)");
         $result = $stmt->execute([
             ':transaction_number' => mt_rand(1000000000, 9999999999), // random 10 digits number for transaction number.
             ':amount' => $amount,
             ':transaction_type' => $transactionType,
             ':user_id' => $userId,
+            ':bus_id' => $busId, // $busId is always 99 if transaction type is 1 (top_up)
             ':status' => 1 // success
         ]);
 
