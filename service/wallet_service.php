@@ -20,7 +20,7 @@ class WalletService {
 
         $stmt = $con->prepare("SELECT id, wallet_id, balance, wallet_own FROM wallets WHERE wallet_id = :wallet_id");
         $stmt->execute([
-            ':wallet_id' => $walletId
+            ':wallet_id' => trim($walletId)
         ]);
         $result = $stmt->fetch();
 
