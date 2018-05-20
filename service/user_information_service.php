@@ -20,7 +20,7 @@ class UserServiceInformation {
 
         $stmt = $con->prepare("SELECT id, username, first_name, last_name, email, phone, wallet_id FROM users WHERE username = :username");
         $stmt->execute([
-            ':username' => $username
+            ':username' => trim($username)
         ]);
         $result = $stmt->fetch();
 

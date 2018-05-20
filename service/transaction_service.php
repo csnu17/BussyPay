@@ -19,7 +19,9 @@ class TransactionService {
         $con = DatabaseConnection::getInstance();
 
         $stmt = $con->prepare("SELECT * FROM transactions WHERE id = :id");
-        $stmt->execute([':id' => $id]);
+        $stmt->execute([
+            ':id' => $id
+        ]);
         $result = $stmt->fetch();
 
         return JSONResponseParser::parse($result, 'Success', 'No transaction found.');

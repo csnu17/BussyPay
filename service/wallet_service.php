@@ -32,7 +32,7 @@ class WalletService {
 
         $stmt = $con->prepare("SELECT id, wallet_id, balance, wallet_own FROM wallets WHERE wallet_own = :wallet_own");
         $stmt->execute([
-            ':wallet_own' => $walletOwn
+            ':wallet_own' => trim($walletOwn)
         ]);
         $result = $stmt->fetch();
 
@@ -47,7 +47,7 @@ class WalletService {
         $stmt = $con->prepare("UPDATE wallets SET balance = :balance WHERE wallet_id = :wallet_id");
         $result = $stmt->execute([
             ':balance' => $adjustedBalance,
-            ':wallet_id' => $wallet_id
+            ':wallet_id' => trim($wallet_id)
         ]);
 
         return JSONResponseParser::parse($result, 'Update balance successfully.', 

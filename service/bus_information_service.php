@@ -15,7 +15,7 @@ class BusInformationService {
         return JSONResponseParser::parse($result, 'Success', 'No buses found.');
     }
 
-    function getBusById(string $id): string {
+    function getBusById(int $id): string {
         $con = DatabaseConnection::getInstance();
 
         $stmt = $con->prepare("SELECT * FROM buses WHERE id = :id");

@@ -11,8 +11,8 @@ class AuthenticationService {
         $stmt = $con->prepare("SELECT id, username, first_name, last_name, email, phone, wallet_id FROM users 
                     WHERE username = :username AND password = :password");
         $stmt->execute([
-            ':username' => $username,
-            ':password' => $password
+            ':username' => trim($username),
+            ':password' => trim($password)
         ]);
         $result = $stmt->fetch();
 
