@@ -4,7 +4,7 @@ require __DIR__ . '/../service/transaction_service.php';
 
 $transactionService = new TransactionService();
 
-// Get raw transaction by id. (no INNER JOIN)
+// Get transaction by id.
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     echo $transactionService->getTransactionById($id);
@@ -17,6 +17,11 @@ if (isset($_GET['id'])) {
 
     echo $transactionService->createTransaction($amount, $transactionType, $userId);
 
-} else { // Get all raw transactions. (no INNER JOIN)
-    echo $transactionService->getAllTransactions();
+} else { // Get all transactions depends on type (top_up or payment) If you want all, just do not send $_GET['type'] from caller side.
+    $type = null;
+    if (isset($_GET['type'])) {
+        $type = $_GET['type'];
+    }
+    
+    echo $transactionService->getAllTransactions($type);
 }

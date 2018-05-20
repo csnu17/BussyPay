@@ -5,11 +5,37 @@ require __DIR__ . '/../helper/database_connection.php';
 
 class TransactionService {
 
-    function getAllTransactions(): string {
+    function getAllTransactions($type): string {
         $con = DatabaseConnection::getInstance();
+        $type = trim($type);
 
-        $stmt = $con->prepare("SELECT * FROM transactions");
-        $stmt->execute();
+        $sql = "SELECT transactions.transaction_number, transactions.amount, transactions.transaction_date, 
+                        users.first_name, users.last_name, transaction_status.status FROM transactions 
+                        INNER JOIN users ON transactions.user_id = users.id 
+                        INNER JOIN transaction_status ON transactions.status = transaction_status.id";
+
+        if ($type) {
+            $sql .= " WHERE transactions.transaction_type = :transaction_type";
+
+            if ($type === 'top_up') {
+                $transaction_type = 1;
+            } else if ($type === 'payment') {
+                $transaction_type = 2;
+            } else {
+                return JSONResponseParser::parse(null, '', 'Type is accepted only top_up or payment.');
+            }
+        }
+
+        $stmt = $con->prepare($sql);
+
+        if ($type) {
+            $stmt->execute([
+                ':transaction_type' => $transaction_type
+            ]);
+        } else {
+            $stmt->execute();
+        }
+
         $result = $stmt->fetchAll();
 
         return JSONResponseParser::parse($result, 'Success', 'No transactions found.');
