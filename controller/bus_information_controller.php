@@ -8,7 +8,15 @@ $busInformationService = new BusInformationService();
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $result = $busInformationService->getBusById($id);
-} else { // Get all buses.
+}
+
+// Search bus by bus name, source, or destination.
+else if (isset($_GET['search'])) {
+    $keyword = $_GET['search'];
+    $result = $busInformationService->search($keyword);
+}
+
+else { // Get all buses.
     $result = $busInformationService->getAllBuses();    
 }
 
