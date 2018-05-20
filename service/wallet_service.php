@@ -8,7 +8,7 @@ class WalletService {
     function getAllWallets(): string {
         $con = DatabaseConnection::getInstance();
 
-        $stmt = $con->prepare("SELECT wallet_id, balance, wallet_own FROM wallets");
+        $stmt = $con->prepare("SELECT id, wallet_id, balance, wallet_own FROM wallets");
         $stmt->execute();
         $result = $stmt->fetchAll();
 
@@ -18,7 +18,7 @@ class WalletService {
     function getWalletByWalletId(string $walletId): string {
         $con = DatabaseConnection::getInstance();
 
-        $stmt = $con->prepare("SELECT wallet_id, balance, wallet_own FROM wallets WHERE wallet_id = :wallet_id");
+        $stmt = $con->prepare("SELECT id, wallet_id, balance, wallet_own FROM wallets WHERE wallet_id = :wallet_id");
         $stmt->execute([
             ':wallet_id' => $walletId
         ]);
@@ -30,7 +30,7 @@ class WalletService {
     function getWalletByWalletOwn(string $walletOwn): string {
         $con = DatabaseConnection::getInstance();
 
-        $stmt = $con->prepare("SELECT wallet_id, balance, wallet_own FROM wallets WHERE wallet_own = :wallet_own");
+        $stmt = $con->prepare("SELECT id, wallet_id, balance, wallet_own FROM wallets WHERE wallet_own = :wallet_own");
         $stmt->execute([
             ':wallet_own' => $walletOwn
         ]);

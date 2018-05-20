@@ -8,7 +8,7 @@ class UserServiceInformation {
     function getAllUsers(): string {
         $con = DatabaseConnection::getInstance();
 
-        $stmt = $con->prepare("SELECT username, first_name, last_name, email, phone, wallet_id FROM users");
+        $stmt = $con->prepare("SELECT id, username, first_name, last_name, email, phone, wallet_id FROM users");
         $stmt->execute();
         $result = $stmt->fetchAll();
 
@@ -18,7 +18,7 @@ class UserServiceInformation {
     function getUserByUsername(string $username): string {
         $con = DatabaseConnection::getInstance();
 
-        $stmt = $con->prepare("SELECT username, first_name, last_name, email, phone, wallet_id FROM users WHERE username = :username");
+        $stmt = $con->prepare("SELECT id, username, first_name, last_name, email, phone, wallet_id FROM users WHERE username = :username");
         $stmt->execute([
             ':username' => $username
         ]);
