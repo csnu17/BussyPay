@@ -6,7 +6,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $serviceAuthen = new AuthenticationService();
-    $result = $serviceAuthen->login($username, $password);
+    echo $serviceAuthen->login($username, $password);
+} else {
+    echo JSONResponseParser::parse(null, '', 'Parameters required.');
 }
-
-echo $result;
