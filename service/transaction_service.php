@@ -4,7 +4,7 @@ require __DIR__ . '/../helper/json_response_parser.php';
 require __DIR__ . '/../helper/database_connection.php';
 require __DIR__ . '/wallet_service.php';
 
-class TransactionService {
+class TransactionService extends SharedService {
 
     function getAllTransactions($type): string {
         $con = DatabaseConnection::getInstance();
@@ -24,7 +24,7 @@ class TransactionService {
             } else if ($type === 'payment') {
                 $transaction_type = 2;
             } else {
-                return JSONResponseParser::parse(null, '', 'Type is accepted only top_up or payment.');
+                return JSONResponseParser::parse(null, '', 'Type is accepted only top_up or payment.', parent::countRecords('transactions'));
             }
         }
 
@@ -40,7 +40,7 @@ class TransactionService {
 
         $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No transactions found.');
+        return JSONResponseParser::parse($result, 'Success', 'No transactions found.', parent::countRecords('transactions'));
     }
 
     function search($type, string $keyword): string {
@@ -53,7 +53,7 @@ class TransactionService {
         } else if ($type === 'payment') {
             $transaction_type = 2;
         } else {
-            return JSONResponseParser::parse(null, '', 'Type is accepted only top_up or payment.');
+            return JSONResponseParser::parse(null, '', 'Type is accepted only top_up or payment.', parent::countRecords('transactions'));
         }
 
         $sql = "SELECT transactions.transaction_number, transactions.amount, transactions.transaction_date, 
@@ -69,15 +69,15 @@ class TransactionService {
         $stmt = $con->prepare($sql);
 
         $stmt->bindValue(':transaction_type', $transaction_type);
-        $stmt->bindValue(':transaction_number', '%' . $keyword . '%');
-        $stmt->bindValue(':status', '%' . $keyword . '%');
-        $stmt->bindValue(':user_id', '%' . $keyword . '%');
+        $stmt->bindValue(':transaction_number', $keyword);
+        $stmt->bindValue(':status', $keyword);
+        $stmt->bindValue(':user_id', $keyword);
 
         $stmt->execute();
 
         $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No transactions found.');
+        return JSONResponseParser::parse($result, 'Success', 'No transactions found.', parent::countRecords('transactions'));
     }
 
     function getTransactionById(int $id): string {
@@ -87,9 +87,9 @@ class TransactionService {
         $stmt->execute([
             ':id' => $id
         ]);
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No transaction found.');
+        return JSONResponseParser::parse($result, 'Success', 'No transaction found.', parent::countRecords('transactions'));
     }
 
     function createTransaction(float $amount, int $transactionType, int $userId, int $busId, int $status): string {
@@ -114,7 +114,7 @@ class TransactionService {
         $walletService = new WalletService();
         $walletService->updateBalance($userId, $amount);
 
-        return JSONResponseParser::parse($result, 'Create a new transaction successfully.', 'Create a new transaction failure.');
+        return JSONResponseParser::parse($result, 'Create a new transaction successfully.', 'Create a new transaction failure.', parent::countRecords('transactions'));
     }
 
 }

@@ -2,8 +2,9 @@
 
 require __DIR__ . '/../helper/json_response_parser.php';
 require __DIR__ . '/../helper/database_connection.php';
+require __DIR__ . '/shared_service.php';
 
-class UserServiceInformation {
+class UserServiceInformation extends SharedService {
 
     function getAllUsers(): string {
         $con = DatabaseConnection::getInstance();
@@ -12,7 +13,7 @@ class UserServiceInformation {
         $stmt->execute();
         $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No users found.');
+        return JSONResponseParser::parse($result, 'Success', 'No users found.', parent::countRecords('users'));
     }
 
     function getUserByUsername(string $username): string {
@@ -22,9 +23,9 @@ class UserServiceInformation {
         $stmt->execute([
             ':username' => trim($username)
         ]);
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No user found.');
+        return JSONResponseParser::parse($result, 'Success', 'No user found.', parent::countRecords('users'));
     }
 
     function search(string $keyword): string {
@@ -42,7 +43,7 @@ class UserServiceInformation {
         $stmt->execute();
         $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No users found.');
+        return JSONResponseParser::parse($result, 'Success', 'No users found.', parent::countRecords('users'));
     }
 
 }

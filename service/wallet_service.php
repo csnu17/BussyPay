@@ -2,8 +2,9 @@
 
 require_once __DIR__ . '/../helper/json_response_parser.php';
 require_once __DIR__ . '/../helper/database_connection.php';
+require __DIR__ . '/shared_service.php';
 
-class WalletService {
+class WalletService extends SharedService {
 
     function getAllWallets(): string {
         $con = DatabaseConnection::getInstance();
@@ -12,7 +13,7 @@ class WalletService {
         $stmt->execute();
         $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No wallets found.');
+        return JSONResponseParser::parse($result, 'Success', 'No wallets found.', parent::countRecords('wallets'));
     }
 
     function getWalletByWalletId(string $walletId): string {
@@ -22,9 +23,9 @@ class WalletService {
         $stmt->execute([
             ':wallet_id' => trim($walletId)
         ]);
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No wallet found.');
+        return JSONResponseParser::parse($result, 'Success', 'No wallet found.', parent::countRecords('wallets'));
     }
 
     function getWalletByWalletOwn(string $walletOwn): string {
@@ -34,9 +35,9 @@ class WalletService {
         $stmt->execute([
             ':wallet_own' => trim($walletOwn)
         ]);
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No wallet found.');
+        return JSONResponseParser::parse($result, 'Success', 'No wallet found.', parent::countRecords('wallets'));
     }
 
     function updateBalance(int $wallet_own_id, float $value): string {
@@ -59,7 +60,7 @@ class WalletService {
         ]);
 
         return JSONResponseParser::parse($result, 'Update balance successfully.', 
-                                            'Update balance unsuccessfully. Please try again later.');
+                                            'Update balance unsuccessfully. Please try again later.', parent::countRecords('wallets'));
     }
 
 }

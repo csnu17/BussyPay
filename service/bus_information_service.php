@@ -2,8 +2,9 @@
 
 require __DIR__ . '/../helper/json_response_parser.php';
 require __DIR__ . '/../helper/database_connection.php';
+require __DIR__ . '/shared_service.php';
 
-class BusInformationService {
+class BusInformationService extends SharedService {
 
     function getAllBuses(): string {
         $con = DatabaseConnection::getInstance();
@@ -12,7 +13,7 @@ class BusInformationService {
         $stmt->execute();
         $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No buses found.');
+        return JSONResponseParser::parse($result, 'Success', 'No buses found.', parent::countRecords('buses'));
     }
 
     function getBusById(int $id): string {
@@ -22,9 +23,9 @@ class BusInformationService {
         $stmt->execute([
             ':id' => $id
         ]);
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No bus found.');
+        return JSONResponseParser::parse($result, 'Success', 'No bus found.', parent::countRecords('buses'));
     }
 
     function search(string $keyword): string {
@@ -41,7 +42,7 @@ class BusInformationService {
         $stmt->execute();
         $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'No buses found.');
+        return JSONResponseParser::parse($result, 'Success', 'No buses found.', parent::countRecords('buses'));
     }
 
 }

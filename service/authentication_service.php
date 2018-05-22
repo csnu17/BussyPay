@@ -2,8 +2,9 @@
 
 require __DIR__ . '/../helper/json_response_parser.php';
 require __DIR__ . '/../helper/database_connection.php';
+require __DIR__ . '/shared_service.php';
 
-class AuthenticationService {
+class AuthenticationService extends SharedService {
 
     function login(string $username, string $password): string {
         $con = DatabaseConnection::getInstance();
@@ -14,9 +15,9 @@ class AuthenticationService {
             ':username' => trim($username),
             ':password' => trim($password)
         ]);
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
 
-        return JSONResponseParser::parse($result, 'Success', 'Username or Password is incorrect.');
+        return JSONResponseParser::parse($result, 'Success', 'Username or Password is incorrect.', parent::countRecords('users'));
     }
 
 }
