@@ -17,8 +17,17 @@ if (isset($_GET['id'])) {
     $busId = $_POST['bus_id'];
     
     echo $transactionService->createTransaction($amount, $transactionType, $userId, $busId);
+} 
 
-} else { // Get all transactions depends on type (top_up or payment) If you want all, just do not send $_GET['type'] from caller side.
+// Search by type (top_up or payment) and (transaction number (full transaction number) or transaction status (1 or 2) or user_id.
+else if (isset($_GET['type']) && isset($_GET['keyword'])) {
+    $type = $_GET['type'];
+    $keyword = $_GET['keyword'];
+
+    echo $transactionService->search($type, $keyword);
+}
+
+else { // Get all transactions depends on type (top_up or payment) If you want all, just do not send $_GET['type'] from caller side.
     $type = null;
     if (isset($_GET['type'])) {
         $type = $_GET['type'];

@@ -42,6 +42,43 @@ class TransactionService {
         return JSONResponseParser::parse($result, 'Success', 'No transactions found.');
     }
 
+    function search($type, string $keyword): string {
+        $con = DatabaseConnection::getInstance();
+        $type = trim($type);
+        $keyword = trim($keyword);
+
+        if ($type === 'top_up') {
+            $transaction_type = 1;
+        } else if ($type === 'payment') {
+            $transaction_type = 2;
+        } else {
+            return JSONResponseParser::parse(null, '', 'Type is accepted only top_up or payment.');
+        }
+
+        $sql = "SELECT transactions.transaction_number, transactions.amount, transactions.transaction_date, 
+                        users.first_name, users.last_name, buses.bus_name,buses.source, buses.terminal, transaction_status.status FROM transactions 
+                        INNER JOIN users ON transactions.user_id = users.id 
+                        INNER JOIN transaction_status ON transactions.status = transaction_status.id 
+                        INNER JOIN buses ON transactions.bus_id = buses.id 
+                        WHERE transactions.transaction_type = :transaction_type AND 
+                        (transactions.transaction_number = :transaction_number OR 
+                        transactions.status = :status OR 
+                        transactions.user_id = :user_id)";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bindValue(':transaction_type', $transaction_type);
+        $stmt->bindValue(':transaction_number', '%' . $keyword . '%');
+        $stmt->bindValue(':status', '%' . $keyword . '%');
+        $stmt->bindValue(':user_id', '%' . $keyword . '%');
+
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        return JSONResponseParser::parse($result, 'Success', 'No transactions found.');
+    }
+
     function getTransactionById(int $id): string {
         $con = DatabaseConnection::getInstance();
 
