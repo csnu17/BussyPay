@@ -9,14 +9,16 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
     echo $transactionService->getTransactionById($id);
 
-} else if (isset($_POST['amount']) && isset($_POST['transaction_type']) && isset($_POST['user_id']) && isset($_POST['bus_id'])) {
+} else if (isset($_POST['amount']) && isset($_POST['transaction_type']) && isset($_POST['user_id']) 
+                && isset($_POST['bus_id']) && isset($_POST['status'])) {
     // Create a new transaction.
     $amount = $_POST['amount'];
     $transactionType = $_POST['transaction_type'];
     $userId = $_POST['user_id'];
     $busId = $_POST['bus_id'];
+    $status = $_POST['status'];
     
-    echo $transactionService->createTransaction($amount, $transactionType, $userId, $busId);
+    echo $transactionService->createTransaction($amount, $transactionType, $userId, $busId, $status);
 } 
 
 // Search by type (top_up or payment) and (transaction number (full transaction number) or transaction status (1 or 2) or user_id.

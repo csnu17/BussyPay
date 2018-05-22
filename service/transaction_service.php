@@ -91,7 +91,7 @@ class TransactionService {
         return JSONResponseParser::parse($result, 'Success', 'No transaction found.');
     }
 
-    function createTransaction(float $amount, int $transactionType, int $userId, int $busId): string {
+    function createTransaction(float $amount, int $transactionType, int $userId, int $busId, int $status): string {
         $con = DatabaseConnection::getInstance();
 
         if ($transactionType == 1) {
@@ -106,7 +106,7 @@ class TransactionService {
             ':transaction_type' => $transactionType,
             ':user_id' => $userId,
             ':bus_id' => $busId, // $busId is always 99 if transaction type is 1 (top_up)
-            ':status' => 1 // success
+            ':status' => $status
         ]);
 
         return JSONResponseParser::parse($result, 'Create a new transaction successfully.', 'Create a new transaction failure.');
