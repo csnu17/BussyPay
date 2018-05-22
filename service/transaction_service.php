@@ -2,6 +2,7 @@
 
 require __DIR__ . '/../helper/json_response_parser.php';
 require __DIR__ . '/../helper/database_connection.php';
+require __DIR__ . '/wallet_service.php';
 
 class TransactionService {
 
@@ -108,6 +109,10 @@ class TransactionService {
             ':bus_id' => $busId, // $busId is always 99 if transaction type is 1 (top_up)
             ':status' => $status
         ]);
+
+        // Update balance in wallet according to the transaction.
+        $walletService = new WalletService();
+        $walletService->updateBalance($userId, $amount);
 
         return JSONResponseParser::parse($result, 'Create a new transaction successfully.', 'Create a new transaction failure.');
     }

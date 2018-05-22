@@ -17,12 +17,12 @@ else if (isset($_GET['wallet_own'])) {
 }
 
 // Update balance in wallet.
-else if (isset($_POST['wallet_id']) && isset($_POST['balance']) && isset($_POST['value'])) {
-    $wallet_id = $_POST['wallet_id'];
+else if (isset($_POST['wallet_own_id']) && isset($_POST['value'])) {
+    $wallet_own_id = $_POST['wallet_own_id'];
     $balance = $_POST['balance'];
     $value = $_POST['value'];
 
-    $result = $walletService->updateBalance($wallet_id, $balance, $value);
+    $result = $walletService->updateBalance($wallet_own_id, $value);
 } else { // Get all wallets.
     $result = $walletService->getAllWallets();
 }

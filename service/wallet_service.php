@@ -1,14 +1,14 @@
 <?php
 
-require __DIR__ . '/../helper/json_response_parser.php';
-require __DIR__ . '/../helper/database_connection.php';
+require_once __DIR__ . '/../helper/json_response_parser.php';
+require_once __DIR__ . '/../helper/database_connection.php';
 
 class WalletService {
 
     function getAllWallets(): string {
         $con = DatabaseConnection::getInstance();
 
-        $stmt = $con->prepare("SELECT id, wallet_id, balance, wallet_own FROM wallets");
+        $stmt = $con->prepare("SELECT * FROM wallets");
         $stmt->execute();
         $result = $stmt->fetchAll();
 
@@ -39,15 +39,23 @@ class WalletService {
         return JSONResponseParser::parse($result, 'Success', 'No wallet found.');
     }
 
-    function updateBalance(string $wallet_id, float $currentBalance, float $value): string {
+    function updateBalance(int $wallet_own_id, float $value): string {
         $con = DatabaseConnection::getInstance();
 
-        $adjustedBalance = $currentBalance + $value; // value can be minus. So current balance will be subtracted.
+        // Get current balance
+        $stmt = $con->prepare("SELECT balance FROM wallets WHERE wallet_own = :wallet_own");
+        $stmt->execute([
+            ':wallet_own' => $wallet_own_id // (user id that owns the wallet.)
+        ]);
+        $result = $stmt->fetch();
+        $balance = $result['balance'];
+
+        $adjustedBalance = $balance + $value; // value can be minus. So current balance will be subtracted.
  
-        $stmt = $con->prepare("UPDATE wallets SET balance = :balance WHERE wallet_id = :wallet_id");
+        $stmt = $con->prepare("UPDATE wallets SET balance = :balance WHERE wallet_own = :wallet_own");
         $result = $stmt->execute([
             ':balance' => $adjustedBalance,
-            ':wallet_id' => trim($wallet_id)
+            ':wallet_own' => $wallet_own_id // (user id that owns the wallet.)
         ]);
 
         return JSONResponseParser::parse($result, 'Update balance successfully.', 
