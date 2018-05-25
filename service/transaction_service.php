@@ -28,6 +28,7 @@ class TransactionService extends SharedService {
             }
         }
 
+        $sql .= " ORDER BY transactions.id DESC";
         $stmt = $con->prepare($sql);
 
         if ($type) {
@@ -64,7 +65,8 @@ class TransactionService extends SharedService {
                         WHERE transactions.transaction_type = :transaction_type AND 
                         (transactions.transaction_number = :transaction_number OR 
                         transactions.status = :status OR 
-                        transactions.user_id = :user_id)";
+                        transactions.user_id = :user_id) 
+                        ORDER BY transactions.id DESC";
 
         $stmt = $con->prepare($sql);
 
