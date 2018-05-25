@@ -80,18 +80,6 @@ class TransactionService extends SharedService {
         return JSONResponseParser::parse($result, 'Success', 'No transactions found.', parent::countRecords('transactions'));
     }
 
-    function getTransactionById(int $id): string {
-        $con = DatabaseConnection::getInstance();
-
-        $stmt = $con->prepare("SELECT * FROM transactions WHERE id = :id");
-        $stmt->execute([
-            ':id' => $id
-        ]);
-        $result = $stmt->fetchAll();
-
-        return JSONResponseParser::parse($result, 'Success', 'No transaction found.', parent::countRecords('transactions'));
-    }
-
     function createTransaction(float $amount, int $transactionType, int $userId, int $busId, int $status): string {
         $con = DatabaseConnection::getInstance();
 
