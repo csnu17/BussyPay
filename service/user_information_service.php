@@ -16,18 +16,6 @@ class UserServiceInformation extends SharedService {
         return JSONResponseParser::parse($result, 'Success', 'No users found.', parent::countRecords('users'));
     }
 
-    function getUserByUsername(string $username): string {
-        $con = DatabaseConnection::getInstance();
-
-        $stmt = $con->prepare("SELECT id, username, first_name, last_name, email, phone, wallet_id FROM users WHERE username = :username");
-        $stmt->execute([
-            ':username' => trim($username)
-        ]);
-        $result = $stmt->fetchAll();
-
-        return JSONResponseParser::parse($result, 'Success', 'No user found.', parent::countRecords('users'));
-    }
-
     function search(string $keyword): string {
         $con = DatabaseConnection::getInstance();
         $keyword = trim($keyword);
