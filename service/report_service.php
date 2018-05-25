@@ -54,7 +54,7 @@ class ReportService {
         // Close writing file operation.
         fclose($data);
 
-        return json_encode(array('code' => 200, 'message' => 'Exported .csv file successfully.'));
+        return json_encode(array('code' => 200, 'message' => 'Exported .csv file successfully. Please check in reports folder.'));
     }
 
 }
