@@ -9,29 +9,22 @@ class WalletService extends SharedService {
     function getAllWallets(): string {
         $con = DatabaseConnection::getInstance();
 
-        $stmt = $con->prepare("SELECT * FROM wallets");
+        $stmt = $con->prepare("SELECT wallets.id, wallets.wallet_id, wallets.balance, users.username, 
+                                    users.first_name, users.last_name 
+                                    FROM wallets INNER JOIN users ON wallets.wallet_own = users.id");
         $stmt->execute();
         $result = $stmt->fetchAll();
 
         return JSONResponseParser::parse($result, 'Success', 'No wallets found.', parent::countRecords('wallets'));
     }
 
-    function getWalletByWalletId(string $walletId): string {
-        $con = DatabaseConnection::getInstance();
-
-        $stmt = $con->prepare("SELECT id, wallet_id, balance, wallet_own FROM wallets WHERE wallet_id = :wallet_id");
-        $stmt->execute([
-            ':wallet_id' => trim($walletId)
-        ]);
-        $result = $stmt->fetchAll();
-
-        return JSONResponseParser::parse($result, 'Success', 'No wallet found.', parent::countRecords('wallets'));
-    }
-
     function getWalletByWalletOwn(string $walletOwn): string {
         $con = DatabaseConnection::getInstance();
 
-        $stmt = $con->prepare("SELECT id, wallet_id, balance, wallet_own FROM wallets WHERE wallet_own = :wallet_own");
+        $stmt = $con->prepare("SELECT wallets.id, wallets.wallet_id, wallets.balance, users.username, 
+                                    users.first_name, users.last_name 
+                                    FROM wallets INNER JOIN users ON wallets.wallet_own = users.id 
+                                    WHERE wallets.wallet_own = :wallet_own");
         $stmt->execute([
             ':wallet_own' => trim($walletOwn)
         ]);
