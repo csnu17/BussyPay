@@ -9,23 +9,11 @@ class BusInformationService extends SharedService {
     function getAllBuses(): string {
         $con = DatabaseConnection::getInstance();
 
-        $stmt = $con->prepare("SELECT * FROM buses");
+        $stmt = $con->prepare("SELECT * FROM buses WHERE id != 99");
         $stmt->execute();
         $result = $stmt->fetchAll();
 
         return JSONResponseParser::parse($result, 'Success', 'No buses found.', parent::countRecords('buses'));
-    }
-
-    function getBusById(int $id): string {
-        $con = DatabaseConnection::getInstance();
-
-        $stmt = $con->prepare("SELECT * FROM buses WHERE id = :id");
-        $stmt->execute([
-            ':id' => $id
-        ]);
-        $result = $stmt->fetchAll();
-
-        return JSONResponseParser::parse($result, 'Success', 'No bus found.', parent::countRecords('buses'));
     }
 
     function search(string $keyword): string {
@@ -33,8 +21,9 @@ class BusInformationService extends SharedService {
         $keyword = trim($keyword);
 
         $stmt = $con->prepare("SELECT * FROM buses WHERE bus_name LIKE :bus_name 
-                                    OR source LIKE :source OR terminal LIKE :terminal");
+                                    OR source LIKE :source OR terminal LIKE :terminal OR id = :id");
 
+        $stmt->bindValue(':id', $keyword);
         $stmt->bindValue(':bus_name', '%' . $keyword . '%');
         $stmt->bindValue(':source', '%' . $keyword . '%');
         $stmt->bindValue(':terminal', '%' . $keyword . '%');
