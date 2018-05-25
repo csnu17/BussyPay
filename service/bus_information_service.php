@@ -20,8 +20,8 @@ class BusInformationService extends SharedService {
         $con = DatabaseConnection::getInstance();
         $keyword = trim($keyword);
 
-        $stmt = $con->prepare("SELECT * FROM buses WHERE bus_name LIKE :bus_name 
-                                    OR source LIKE :source OR terminal LIKE :terminal OR id = :id");
+        $stmt = $con->prepare("SELECT * FROM buses WHERE id != 99 AND (bus_name LIKE :bus_name 
+                                    OR source LIKE :source OR terminal LIKE :terminal OR id = :id)");
 
         $stmt->bindValue(':id', $keyword);
         $stmt->bindValue(':bus_name', '%' . $keyword . '%');
