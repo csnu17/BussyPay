@@ -24,9 +24,10 @@ class WalletService extends SharedService {
         $stmt = $con->prepare("SELECT wallets.id, wallets.wallet_id, wallets.balance, users.username, 
                                     users.first_name, users.last_name 
                                     FROM wallets INNER JOIN users ON wallets.wallet_own = users.id 
-                                    WHERE wallets.wallet_own = :wallet_own");
+                                    WHERE wallets.wallet_id = :wallet_id");
+                                    
         $stmt->execute([
-            ':wallet_own' => trim($walletOwn)
+            ':wallet_id' => trim($walletOwn)
         ]);
         $result = $stmt->fetchAll();
 
