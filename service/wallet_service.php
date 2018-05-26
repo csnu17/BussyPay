@@ -18,7 +18,7 @@ class WalletService extends SharedService {
         return JSONResponseParser::parse($result, 'Success', 'No wallets found.', parent::countRecords('wallets'));
     }
 
-    function getWalletByWalletOwn(string $walletOwn): string {
+    function getWalletByWalletId(string $walletId): string {
         $con = DatabaseConnection::getInstance();
 
         $stmt = $con->prepare("SELECT wallets.id, wallets.wallet_id, wallets.balance, users.username, 
@@ -27,7 +27,7 @@ class WalletService extends SharedService {
                                     WHERE wallets.wallet_id = :wallet_id");
                                     
         $stmt->execute([
-            ':wallet_id' => trim($walletOwn)
+            ':wallet_id' => trim($walletId)
         ]);
         $result = $stmt->fetchAll();
 

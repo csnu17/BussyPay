@@ -4,10 +4,10 @@ require __DIR__ . '/../service/wallet_service.php';
 
 $walletService = new WalletService();
 
-// Get wallet by wallet own.
-if (isset($_GET['wallet_own'])) {
-    $walletOwn = $_GET['wallet_own'];
-    $result = $walletService->getWalletByWalletOwn($walletOwn);
+// Get wallet by wallet id.
+if (isset($_GET['wallet_id'])) {
+    $walletId = $_GET['wallet_id'];
+    $result = $walletService->getWalletByWalletId($walletId);
 }
 
 // Update balance in wallet.
