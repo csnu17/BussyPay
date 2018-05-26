@@ -100,9 +100,15 @@ class TransactionService extends SharedService {
             ':status' => $status
         ]);
 
-        // Update balance in wallet according to the transaction.
-        $walletService = new WalletService();
-        $walletService->updateBalance($userId, $amount);
+        // Update balance in wallet according to the transaction if status is success.
+        if ($status == 1) {
+            if ($transactionType == 2) {
+                $amount = -1 * $amount; // if transaction type is payment, change amount to minus value.
+            }
+
+            $walletService = new WalletService();
+            $walletService->updateBalance($userId, $amount);
+        }
 
         return JSONResponseParser::parse($result, 'Create a new transaction successfully.', 'Create a new transaction failure.', parent::countRecords('transactions'));
     }
