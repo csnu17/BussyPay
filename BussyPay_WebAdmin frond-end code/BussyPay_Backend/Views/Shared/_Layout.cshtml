@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr") 
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+    @Styles.Render("~/bundles/style")
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-3.2.1.min.js")"></script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+
+    <!-- wpf loader Two -->
+    <div id="wpf-loader-two">
+        <div class="wpf-loader-two-inner">
+            <span>Loading</span>
+        </div>
+    </div>
+
+
+    <section class="vbox">
+        <header class="bg-dark dk header navbar navbar-fixed-top-xs">
+            <div class="navbar-header">
+
+                <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <a href="@Url.Action("Index", "Transaction", new { Area = ""})" class="navbar-brand">
+                    <div class="web-title" style="text-overflow: ellipsis;white-space:nowrap;font-size:18px;">BussyPay</div>
+                </a>
+
+                <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".nav-user">
+                    <i class="fa fa-cog"></i>
+                </a>
+
+            </div>
+
+
+            <ul class="nav navbar-nav navbar-right m-n hidden-xs nav-user">
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="thumb-sm avatar pull-left">
+                            
+                            <img src="https://dummyimage.com/200/89cc9/ffffff.png&text=A">
+                        </span>
+                        <text style="color: white;font-size: larger;" id="adminName"> <b class="caret"></b><text> 
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight">
+                        <li>
+                            <a href="@Url.Action("Index","Home",new { area =""})">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </header>
+        
+            <section class="hbox stretch">
+                <!-- .aside -->
+                <aside class="bg-light lter b-r aside-md hidden-print hidden-xs" id="nav">
+                    <section class="vbox">
+
+                        <header class="header bg-primary lter text-center clearfix hidden">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-dark btn-icon" title="New project"><i class="fa fa-plus"></i></button>
+                                <div class="btn-group hidden-nav-xs">
+
+                                </div>
+                            </div>
+                        </header>
+                        <section class="w-f scrollable">
+                            <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="5px" data-color="#333333">
+
+                                <!-- nav -->
+                                <nav class="nav-primary hidden-xs">
+                                    <ul class="nav">
+                                        <li>
+                                            <a href="@Url.Action("Index", "Transaction", new { Area = ""})">
+                                                <i class="fa fa-tasks icon">
+                                                    <b class="bg-primary dker"></b>
+                                                </i>
+                                                <span>Transaction</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Index", "Topup", new { Area = ""})">
+                                                <i class="fa fa-plus-square icon">
+                                                    <b class="bg-info"></b>
+                                                </i>
+                                                <span>Topup</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Index", "Bus", new { Area = ""})">
+                                                <i class="fa fa-truck icon">
+                                                    <b class="bg-info"></b>
+                                                </i>
+                                                <span>Bus Information</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Index", "User", new { Area = ""})">
+                                                <i class="fa fa-user icon">
+                                                    <b class="bg-info"></b>
+                                                </i>
+                                                <span>User Information</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </nav>
+                                <!-- / nav -->
+                            </div>
+                        </section>
+
+                        <footer class="footer lt hidden-xs b-t b-light">
+                            <div id="chat" class="dropup hidden">
+                                <section class="dropdown-menu on aside-md m-l-n">
+                                    <section class="panel bg-white"></section>
+                                </section>
+                            </div>
+                            <div class="btn-group hidden-nav-xs">
+
+                            </div>
+                        </footer>
+                    </section>
+                </aside>
+                <!-- /.aside -->
+
+                <section id="content">
+                    <section class="vbox">
+                        <header class="header bg-white b-b b-light">
+                            <div style="width: 100%;display: flex;">
+                                @RenderSection("ContentHeader", required: false)
+                            </div>
+                        </header>
+                        <section class="scrollable wrapper">
+                            @RenderBody()
+                        </section>
+
+                    </section>
+                    <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen, open" data-target="#nav,html"></a>
+                </section>
+
+                <aside class="bg-light lter b-l aside-md hide" id="notes">
+                    <div class="wrapper">Notification</div>
+                </aside>
+            </section>
+        </section>
+ 
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <!-- loader -->
+    <div id="loading-panel" class="mikepad-panel" style="display:none">
+        <div class="mikepad-loading">
+            <div class="binding"></div>
+            <div class="pad">
+                <div class="line line1"></div>
+                <div class="line line2"></div>
+                <div class="line line3"></div>
+                <div class="line line4"></div>
+            </div>
+            <div class="text">
+                Now Loading...
+            </div>
+        </div>
+    </div>
+    <input style="display:none" type="text" name="fakeusernameremembered" />
+    <input style="display:none" type="password" name="fakepasswordremembered" />
+
+    @* workaround for ajax request antiForgery  http://stackoverflow.com/questions/4074199/jquery-ajax-calls-and-the-html-antiforgerytoken *@
+    <form id="__AjaxAntiForgeryForm" action="#" method="post"> @Html.AntiForgeryToken()</form>
+
+    <script type="text/javascript">
+        var addAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $('#__AjaxAntiForgeryForm input[name=__RequestVerificationToken]').val();
+            return data;
+        };
+
+        $(function () {
+            $("#panel-loading-menu").show();
+            jQuery('#wpf-loader-two').delay(300).fadeOut("slow", function () {
+                checkSession(); 
+                calert();
+
+            });
+        });
+
+        function showLoadingPanel(isShow) {
+            if (isShow) {
+                $("#loading-panel").show();
+            }
+            else {
+                $("#loading-panel").hide();
+            }
+        }
+
+        function checkSession() {
+            var user = getCookie("login");
+            if (user == "" || user == null) {
+                document.location.href = "@Url.Action("Index", "Home", new { Area = "" })";
+            }
+
+            $("#adminName").html(getCookie("first_name") + "  " + getCookie("last_name")+'<b class="caret"></b>');
+         }
+
+
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+    </script>
+
+    @Scripts.Render("~/bundles/notebook")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

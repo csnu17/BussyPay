@@ -1,0 +1,234 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}*/
+
+.input-validation-error {
+    border: solid 1px #ff5f5f !important;
+    border-radius: 3px;
+}
+
+.text-danger {
+    color: #ff5f5f;
+}
+
+i.img {
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0px 2px 0px 2px;
+    padding: 3px 30px 0px 20px;
+}
+
+/* logo */
+i.img-logo {
+    background-size: 50px;
+    background-image: url('img/DDX-logo.png');
+}
+
+.web-title {
+    display: inline-block;
+    color: white;
+}
+
+
+.swal-button-container {
+    margin: 5px;
+    position: relative;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+/* loader */
+.mikepad-panel {
+    width: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0.75;
+    z-index: 1000000;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.mikepad-loading {
+    width: 150px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    -moz-transform: translateY(-50%) translateX(-50%);
+    -o-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+}
+
+    .mikepad-loading .binding {
+        content: '';
+        width: 50px;
+        height: 5px;
+        border: 4px solid #ffffff;
+        margin: 0 auto;
+    }
+
+    .mikepad-loading .pad {
+        width: 50px;
+        height: 60px;
+        border: 4px solid #ffffff;
+        border-top: 0;
+        padding: 6px;
+        margin: 0 auto;
+    }
+
+    .mikepad-loading .line {
+        width: 30px;
+        margin-top: 4px;
+        border-top: 4px solid #ffffff;
+        opacity: 0;
+        -webkit-animation: writeline 2s infinite ease-in;
+        -moz-animation: writeline 2s infinite ease-in;
+        -o-animation: writeline 2s infinite ease-in;
+        animation: writeline 2s infinite ease-in;
+    }
+
+        .mikepad-loading .line:first-child {
+            margin-top: 0;
+        }
+
+        .mikepad-loading .line.line1 {
+            -webkit-animation-delay: 0s;
+            -moz-animation-delay: 0s;
+            -o-animation-delay: 0s;
+            animation-delay: 0s;
+        }
+
+        .mikepad-loading .line.line2 {
+            -webkit-animation-delay: 0.3s;
+            -moz-animation-delay: 0.3s;
+            -o-animation-delay: 0.3s;
+            animation-delay: 0.3s;
+        }
+
+        .mikepad-loading .line.line3 {
+            -webkit-animation-delay: 0.6s;
+            -moz-animation-delay: 0.6s;
+            -o-animation-delay: 0.6s;
+            animation-delay: 0.6s;
+        }
+
+        .mikepad-loading .line.line4 {
+            -webkit-animation-delay: 0.9s;
+            -moz-animation-delay: 0.9s;
+            -o-animation-delay: 0.9s;
+            animation-delay: 0.9s;
+        }
+
+    .mikepad-loading .text {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 1.25em;
+        color: #ffffff;
+    }
+
+@-webkit-keyframes writeline {
+    0% {
+        width: 0px;
+        opacity: 0;
+    }
+
+    33% {
+        width: 15px;
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes writeline {
+    0% {
+        width: 0px;
+        opacity: 0;
+    }
+
+    33% {
+        width: 15px;
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-o-keyframes writeline {
+    0% {
+        width: 0px;
+        opacity: 0;
+    }
+
+    33% {
+        width: 15px;
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes writeline {
+    0% {
+        width: 0px;
+        opacity: 0;
+    }
+
+    33% {
+        width: 15px;
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

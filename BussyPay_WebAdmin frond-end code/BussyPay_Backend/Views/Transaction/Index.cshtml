@@ -1,0 +1,177 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@section ContentHeader{
+    <div style="flex: 1;margin: 0;padding-top: 10px;">
+        <i class="fa fa-search fa fa-2x "></i>
+        <h4 class="m-t-xs inline padder">Transaction</h4>
+    </div>
+}
+
+
+
+<header class="header bg-white b-b clearfix">
+    <div class="row m-t-sm">
+        <form id="searchForm" name="seacrhForm" class="form-horizontal col-sm-12 m-b-xs">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label font-bold" for="">Keyword :</label>
+                        <div class="col-md-10">
+                            <input type="text" name="keyword" id="keyword" class="form-control" placeholder="Ex. {Transaction Id},{user Id},success">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label font-bold" for="">Type Transaction : </label>
+                        <div class="col-md-10">
+                            <select id="type_transaction" name="type_transaction" class="form-control" style="width:100%">
+                                <option value="payment">Payment</option>
+                                <option value="top_up ">Topup</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="button" class="btn btn-s-md btn-info" onclick="oDataTable.api().ajax.reload();">
+                    <i class="fa fa-search"></i>
+                    Search
+                </button>
+                <a href="@Url.Action("Create","Transaction",new { area =""})" class="btn btn-s-md btn-success"><i class="fa fa-plus"></i> Create</a>
+
+                <button type="button" onclick="exportReport()" class="btn btn-s-md btn-dark">
+                    <i class="fa fa-download"></i>
+                    Export Report
+                </button>
+
+                <button type="button" onclick="clearFilter()" class="btn btn-s-md btn-default">
+                    <i class="fa fa-refresh"></i>
+                    Clear
+                </button>
+            </div>
+        </form>
+    </div>
+</header>
+
+
+<br />
+<div class="table-responsive clearfix">
+    <section class="panel panel-default">
+        <div class="table-responsive">
+            <table class="table table-striped m-b-none" id="dataTable" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th width="10%">Transaction Id</th>
+                        <th width="5%">Amount</th>
+                        <th width="10%">Transaction Date</th>
+                        <th width="10%">Firstname</th>
+                        <th width="10%">Lastname</th>
+                        <th width="15%">Bus Name</th>
+                        <th width="15%">Source</th>
+                        <th width="15%">Destination</th>
+                        <th width="10%">Status</th> 
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+
+@Scripts.Render("~/bundles/notebook/dataTable")
+@Styles.Render("~/bundles/style/dataTable")
+
+<script type="text/javascript">
+        var oDataTable;
+        initDataTable();
+
+
+        function initDataTable() {
+            oDataTable = $('#dataTable').dataTable({
+                "bProcessing": true,
+                "bServerSide": true,
+                "sAjaxSource": '@Url.Action("SearchAsync", "Transaction", new  {Area= "" })',
+                "dom": '<"top"<"col-sm-6"l><"col-sm-6"p>>rt<"bottom"<"col-sm-6"i><"col-sm-6"p>><"clear">',
+                "iDisplayLength": 25,
+                "ordering": false,
+                "aoColumns": [
+                    { "mData": "transaction_number" },
+                    { "mData": "amount" },
+					{ "mData": "transaction_date" },
+					{ "mData": "first_name" },
+                    { "mData": "last_name" },
+                    { "mData": "bus_name" },
+                    { "mData": "source" },
+                    { "mData": "terminal" },
+                    { "mData": "status" } 
+                ],
+                "fnServerData": function (sSource, aoData, fnCallback) {
+                    var postData = $('#searchForm').serializeArray();
+                    aoData = aoData.concat(postData);
+                    $.ajax({
+                        "dataType": 'json',
+                        "type": "POST",
+                        "url": sSource,
+                        "data": aoData,
+                        "cache": false,
+                        "success": function (data, textStatus, jqXHR) {
+                            fnCallback(data, textStatus, jqXHR);
+                        }
+                    });
+                },
+                "aoColumnDefs": [
+                   { "sClass": "text-center", "bSortable": false, "aTargets": [0] },
+                   { "sClass": "text-center", "bSortable": false, "aTargets": [1] },
+                   { "sClass": "text-left", "bSortable": false, "aTargets": [2] },
+                   { "sClass": "text-left", "bSortable": false, "aTargets": [3] },
+                   { "sClass": "text-left", "bSortable": false, "aTargets": [4] },
+                   { "sClass": "text-center", "bSortable": false, "aTargets": [5] },
+                   { "sClass": "text-center", "bSortable": false, "aTargets": [6] },
+                   { "sClass": "text-center", "bSortable": false, "aTargets": [7] },
+                   { "sClass": "text-center", "bSortable": false, "aTargets": [8] },
+                ],
+                "fnDrawCallback": function () {
+
+                }
+            });
+        }
+
+    function clearFilter() {
+         $('#type_transaction').prop('selectedIndex', 0);
+            $("#keyword").val("");
+            oDataTable.api().ajax.reload();
+    }
+
+    function exportReport() {
+        showLoadingPanel(true);
+        $.get('http://122.155.202.166/api/controller/report_controller.php').done(function (response) {
+            showLoadingPanel(false);
+            window.location.href = 'http://122.155.202.166/api/reports/transactions_report.csv';
+        }).error(function (response) { 
+            showLoadingPanel(false);
+            swal({
+                title: decodeURIComponent("Cannot download report"),
+                icon: 'error',
+                showCancelButton: false,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                button: "OK",
+            });
+        });
+    }
+
+</script>
+
+
+

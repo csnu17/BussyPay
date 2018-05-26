@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+@section ContentHeader{
+    <div style="flex: 1;margin: 0;padding-top: 10px;">
+        <i class="fa fa-search fa fa-2x "></i>
+        <h4 class="m-t-xs inline padder">Create Transaction</h4>
+    </div>
+}
+
+
+
+
+
+<header class="header bg-white b-b clearfix">
+    <div class="row m-t-sm">
+        <form id="form" name="form" class="form-horizontal col-sm-12 m-b-xs">
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label font-bold" for="">Transaction Type : </label>
+                        <div class="col-md-10">
+                            <select id="trasaction" name="transaction" class="form-control" style="width:100%">
+                                <option value="1">Topup</option>
+                                <option value="2">Payment</option> 
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="panelBus">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label font-bold" for="">Bus Name : </label>
+                        <div class="col-md-10">
+                            <select id="bus_id" name="bus_id" class="form-control" style="width:100%">
+                                <option value="1">สาย 28 เลขที่ 1234</option>
+                                <option value="2">สาย 8 เลขที่ 1234</option> 
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label font-bold" for="">Amount : </label>
+                        <div class="col-md-10">
+                            <input type="number" min="1" id="amount" name="amount" class="form-control" placeholder="Amount" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label font-bold" for="">Status : </label>
+                        <div class="col-md-10">
+                            <select id="status" name="status" class="form-control" style="width:100%">
+                                <option value="1">Success</option>
+                                <option value="2">Fail</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12 text-right">
+                    <button type="submit" class="btn btn-s-md btn-primary"><i class="fa fa-save"></i> Save</button>
+                    <a href="@Url.Action("Index", "Transaction", new { Area = ""})" class="btn btn-s-md btn-default">Back</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</header>
+<script>
+    $("#panelBus").hide();
+
+    $("#trasaction").change(function () {
+        var item = $(this);
+        if (item.val() == "1") {
+            $("#panelBus").hide();
+        } else {
+            $("#panelBus").show();
+        }  
+         
+    });
+
+    $("#form").submit(function (event) {
+        var data =
+        {
+           "bus_id": $("#bus_id").val(),
+           "amount": $("#amount").val(),
+           "status": $("#status").val(),
+           "transaction_type": $("#trasaction").val(),
+           "user_id": getCookie("login") 
+        };
+        
+        $.post('http://122.155.202.166/api/controller/transaction_controller.php', data)
+          .done(function (obj) {
+              var obj = JSON.parse(obj);
+             
+              if (obj.code == 400) {
+                  swal({
+                      title: decodeURIComponent(obj.message),
+                      icon: 'error',
+                      showCancelButton: false,
+                      closeOnConfirm: false,
+                      showLoaderOnConfirm: true,
+                      button: "OK",
+                  });
+              } else {
+                  swal({
+                      title: decodeURIComponent(obj.message),
+                      icon: 'success',
+                      showCancelButton: false,
+                      closeOnConfirm: false,
+                      showLoaderOnConfirm: true,
+                      button: "OK",
+                  });
+              }
+ 
+              $('.swal-button').click(function () {
+                  document.location.href="@Url.Action("Index", "Transaction", new { Area = ""})";
+              });
+          });
+        return false;
+
+    });
+
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return 1;
+    }
+
+
+</script>

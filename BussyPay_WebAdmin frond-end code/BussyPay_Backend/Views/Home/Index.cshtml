@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+
+<section id="content" class="m-t-lg wrapper-md animated fadeInUp">
+    <div class="container aside-xxl">
+        <a class="navbar-brand block" href="index.php">BussyPay</a>
+        <section class="panel panel-default bg-white m-t-lg">
+            <header class="panel-heading text-center">
+                <strong>Login</strong>
+            </header>
+            <form action="#" class="panel-body wrapper-lg" id="idForm">
+                <input type="hidden" name="action" value="login" />
+                <div class="form-group">
+                    <label class="control-label">Username</label>
+                    <input type="text" placeholder="Username" name="username" class="form-control input-lg">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Password</label>
+                    <input type="password" id="inputPassword" name="password" placeholder="Password" class="form-control input-lg">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block m-b-sm input-lg">Login</button>
+            </form>
+        </section>
+    </div>
+</section>

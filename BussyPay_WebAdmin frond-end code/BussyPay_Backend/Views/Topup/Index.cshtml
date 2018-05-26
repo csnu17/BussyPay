@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@section ContentHeader{
+    <div style="flex: 1;margin: 0;padding-top: 10px;">
+        <i class="fa fa-search fa fa-2x "></i>
+        <h4 class="m-t-xs inline padder">Topup</h4>
+    </div>
+}
+
+
+
+<header class="header bg-white b-b clearfix">
+    <div class="row m-t-sm">
+        <form id="searchForm" name="seacrhForm" class="form-horizontal col-sm-12 m-b-xs">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label font-bold" for="">Wallet Id :</label>
+                        <div class="col-md-10">
+                            <input type="text" name="wallet_id" id="wallet_id" class="form-control" placeholder="Ex. top_wallet_1234">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="form-group text-center">
+                <button type="button" class="btn btn-s-md btn-info" onclick="oDataTable.api().ajax.reload();">
+                    <i class="fa fa-search"></i>
+                    Search
+                </button>
+
+                <button type="button" onclick="clearFilter()" class="btn btn-s-md btn-default">
+                    <i class="fa fa-refresh"></i>
+                    Clear
+                </button>
+            </div>
+        </form>
+    </div>
+</header>
+
+
+<br />
+<div class="table-responsive clearfix">
+    <section class="panel panel-default">
+        <div class="table-responsive">
+            <table class="table table-striped m-b-none" id="dataTable" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th width="25%">Id</th>
+                        <th width="25%">Wallet Id</th>
+                        <th width="25%">Balance</th>
+                        <th width="25%">Name</th>  
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+
+@Scripts.Render("~/bundles/notebook/dataTable")
+@Styles.Render("~/bundles/style/dataTable")
+
+<script type="text/javascript">
+        var oDataTable;
+        initDataTable();
+
+
+        function initDataTable() {
+            oDataTable = $('#dataTable').dataTable({
+                "bProcessing": true,
+                "bServerSide": true,
+                "sAjaxSource": '@Url.Action("SearchAsync", "Topup", new  {Area= "" })',
+                "dom": '<"top"<"col-sm-6"l><"col-sm-6"p>>rt<"bottom"<"col-sm-6"i><"col-sm-6"p>><"clear">',
+                "iDisplayLength": 25,
+                "ordering": false,
+                "aoColumns": [
+                         {
+                        "sName": "id",
+                        "mData": "id"
+                        },
+                        {
+                                        "sName": "wallet_id",
+                                        "mData": "wallet_id"
+                        },
+                        {
+                            "sName": "balance",
+                            "mData": "balance"
+                        },
+                        {
+                            "sName": "first_name",
+                            "mData": null, render: function (data, type, row) {
+                                return data.first_name + " " + data.last_name;
+                            }
+                        } 
+                ],
+                "fnServerData": function (sSource, aoData, fnCallback) {
+                    var postData = $('#searchForm').serializeArray();
+                    aoData = aoData.concat(postData);
+                    $.ajax({
+                        "dataType": 'json',
+                        "type": "POST",
+                        "url": sSource,
+                        "data": aoData,
+                        "cache": false,
+                        "success": function (data, textStatus, jqXHR) {
+                            fnCallback(data, textStatus, jqXHR);
+                        }
+                    });
+                },
+                "aoColumnDefs": [
+                   { "sClass": "text-center", "bSortable": false, "aTargets": [0] },
+                   { "sClass": "text-left", "bSortable": false, "aTargets": [1] },
+                   { "sClass": "text-left", "bSortable": false, "aTargets": [2] } 
+
+                ],
+                "fnDrawCallback": function () {
+
+                }
+            });
+        }
+
+        function clearFilter() {
+            $("#wallet_id").val("");
+            oDataTable.api().ajax.reload();
+        }
+
+</script>
+
+

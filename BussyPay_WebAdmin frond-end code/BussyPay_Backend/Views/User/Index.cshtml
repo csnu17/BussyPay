@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@section ContentHeader{
+    <div style="flex: 1;margin: 0;padding-top: 10px;">
+        <i class="fa fa-search fa fa-2x "></i>
+        <h4 class="m-t-xs inline padder">User</h4>
+    </div>
+}
+
+
+
+<header class="header bg-white b-b clearfix">
+    <div class="row m-t-sm">
+        <form id="searchForm" name="seacrhForm" class="form-horizontal col-sm-12 m-b-xs">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label font-bold" for="">Keyword :</label>
+                        <div class="col-md-10">
+                            <input type="text" name="search" id="search" class="form-control"  placeholder="Ex. 1,Kittisak,cs.sealsoul@gmail.com,0812345678">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="form-group text-center">
+                <button type="button" class="btn btn-s-md btn-info" onclick="oDataTable.api().ajax.reload();">
+                    <i class="fa fa-search"></i>
+                    Search
+                </button>
+
+                <button type="button" onclick="clearFilter()" class="btn btn-s-md btn-default">
+                    <i class="fa fa-refresh"></i>
+                    Clear
+                </button>
+            </div>
+        </form>
+    </div>
+</header>
+
+
+<br />
+<div class="table-responsive clearfix">
+    <section class="panel panel-default">
+        <div class="table-responsive">
+            <table class="table table-striped m-b-none" id="dataTable" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th width="20%">Id</th>
+                        <th width="20%">Firstname</th>
+                        <th width="25%">Lastname</th>
+                        <th width="25%">Email</th>
+                        <th width="25%">Username</th>
+                        <th width="15%">Tel</th> 
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+
+@Scripts.Render("~/bundles/notebook/dataTable")
+@Styles.Render("~/bundles/style/dataTable")
+
+<script type="text/javascript">
+        var oDataTable;
+        initDataTable();
+
+
+        function initDataTable() {
+            oDataTable = $('#dataTable').dataTable({
+                "bProcessing": true,
+                "bServerSide": true,
+                "sAjaxSource": '@Url.Action("SearchAsync", "User", new  {Area= "" })',
+                "dom": '<"top"<"col-sm-6"l><"col-sm-6"p>>rt<"bottom"<"col-sm-6"i><"col-sm-6"p>><"clear">',
+                "iDisplayLength": 25,
+                "ordering": false,
+                "aoColumns": [
+                     {
+                         "sName": "id",
+                         "mData": "id"
+                     },
+					{
+					    "sName": "first_name",
+					    "mData": "first_name"
+					},
+					{
+					    "sName": "last_name",
+					    "mData": "last_name"
+					},
+					{
+					    "sName": "email",
+					    "mData": "email"
+					},
+					{
+					    "sName": "username",
+					    "mData": "username"
+					},
+					{
+					    "sName": "phone",
+					    "mData": "phone"
+					}
+                ],
+                "fnServerData": function (sSource, aoData, fnCallback) {
+                    var postData = $('#searchForm').serializeArray();
+                    aoData = aoData.concat(postData);
+                    $.ajax({
+                        "dataType": 'json',
+                        "type": "POST",
+                        "url": sSource,
+                        "data": aoData,
+                        "cache": false,
+                        "success": function (data, textStatus, jqXHR) {
+                            fnCallback(data, textStatus, jqXHR);
+                        }
+                    });
+                },
+                "aoColumnDefs": [
+                   { "sClass": "text-center", "bSortable": false, "aTargets": [0] },
+                   { "sClass": "text-left", "bSortable": false, "aTargets": [1] },
+                   { "sClass": "text-left", "bSortable": false, "aTargets": [2] },
+                   { "sClass": "text-left", "bSortable": false, "aTargets": [3] },
+                   { "sClass": "text-left", "bSortable": false, "aTargets": [4] },
+                   { "sClass": "text-left", "bSortable": false, "aTargets": [5] },
+
+                ],
+                "fnDrawCallback": function () {
+
+                }
+            });
+        }
+
+        function clearFilter() {
+            $("#search").val("");
+            oDataTable.api().ajax.reload();
+        }
+
+</script>
+
+
