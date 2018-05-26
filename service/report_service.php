@@ -24,7 +24,7 @@ class ReportService {
             mkdir($filelocation, 0777, true);
         }
 
-	    $filename = 'export-' . date('Y-m-d H.i.s') . '.csv';
+	    $filename = 'transactions_report.csv'; // 'export-' . date('Y-m-d H.i.s') . '.csv';
 	    $file_export  =  $filelocation . $filename;
         $data = fopen($file_export, 'w');
 
